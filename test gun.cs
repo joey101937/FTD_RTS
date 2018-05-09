@@ -12,6 +12,7 @@ public class testgun : Weapon {
     override
     public void fire(BaseUnit target)
     {
+        this.lastFireTime = Time.time;
         target.TakeDamage(damage);
     }
 }

@@ -27,7 +27,9 @@ public class Weapon : MonoBehaviour {
 
 	public void loadProjectile()
     {
+        print("Loading projectile");
         projectile = projectileObject.GetComponent<Projectile>();
+        projectile.damage = damage;
     }
 
     public virtual void fire()
