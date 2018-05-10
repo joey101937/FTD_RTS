@@ -18,4 +18,10 @@ public class BisonUnit : BaseUnit {
         this.myPathfinder = transform.parent.gameObject.GetComponent<Pathfinder>();
     }
 
+    public override Vector3 getHitOffset()
+    {
+        int i = Random.Range(1, 11);
+        float offset = 1 + (i * .1f);
+        return new Vector3(0, offset,0);
+    }
 }

@@ -21,8 +21,8 @@ public class BisonWeapon : Weapon {
     override
     public void init()
     {
-        range = 45;
-        damage = 10;
+        range = 55;
+        damage = 15;
         antiGround = true;
         antiAir = false;
         fireRate = 2f;

@@ -13,7 +13,6 @@ public class Pathfinder : MonoBehaviour {
     public Weapon myWeapon;
     public int scanRadius = 70;
     public bool debugging = true;
-    public int distanceFromFoe = 10000;
     public BaseUnit foe = null;
     public bool travelingByInstruction = false; //is the unit going somewhere teh player insctructed
     public Vector3 givenDestination = new Vector3(0,0,0); //where the player told the unit to go
@@ -28,6 +27,7 @@ public class Pathfinder : MonoBehaviour {
         if (travelingByInstruction)
         {
             //if the player said to go somewhere, go there and thats it.
+
             agent.SetDestination(givenDestination);
             return;
         }
@@ -37,7 +37,7 @@ public class Pathfinder : MonoBehaviour {
             {
                 //there is a foe around, go to it
                 agent.SetDestination(foe.transform.position);
-                if (Vector3.Distance(foe.transform.position, transform.position) <= host.weaponRange+2) //+2 so we go alittle under the required range
+                if (Vector3.Distance(foe.transform.position, transform.position) <= host.weaponRange+0) //+2 so we go alittle under the required range
                 {
                     agent.SetDestination(transform.position); //stop once in range
                     if (host.hullMountedWeapon != null)
@@ -86,7 +86,10 @@ public class Pathfinder : MonoBehaviour {
                 }
             }
         }
-
+        if (debugging)
+        {
+            print("unit of team " + host.team + " found " + nearbyEnemies.Count +" nearby enemies");
+        }
         float closest = -1f;
         foreach (BaseUnit a in nearbyEnemies)
         {
@@ -99,5 +102,14 @@ public class Pathfinder : MonoBehaviour {
         }
         if (debugging) print("END OF SETDIST, FOE IS  " + foe);
     }
+    /*
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(this.gameObject.transform.position, 70);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(this.gameObject.transform.position, 55);
+    } // Only used for editor visual stuff
+    */
 
 }

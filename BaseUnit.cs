@@ -15,8 +15,8 @@ public class BaseUnit : MonoBehaviour {
     public string unitName = "Unnamed Unit";
     public Pathfinder myPathfinder = null; //this is to be set on start
     public List<Turret> turrets = new List<Turret>();
+    public GameObject deathExplosion = null; //spawns on death
     public Classification classification = Classification.Simple;
-
     void Start()
     {
         init();
@@ -27,12 +27,12 @@ public class BaseUnit : MonoBehaviour {
     {
         int lowestRange = 99999;
         Turret[] tur = this.gameObject.GetComponentsInChildren<Turret>();
-        if (tur != null && tur.Length>0)
+        if (tur != null && tur.Length > 0)
         {
             foreach (Turret t in tur)
             {
                 if (t == null) continue;
-                if(!turrets.Contains(t))turrets.Add(t);
+                if (!turrets.Contains(t)) turrets.Add(t);
                 if (t.weapon.range < lowestRange)
                 {
                     lowestRange = t.weapon.range;
@@ -58,7 +58,7 @@ public class BaseUnit : MonoBehaviour {
         myPathfinder = gameObject.GetComponent<Pathfinder>();
         team = 1;
     }
-   
+
 
 
     /*
@@ -77,8 +77,30 @@ public class BaseUnit : MonoBehaviour {
      */
     public void Kill()
     {
+        OnDeath();
+        if (gameObject.transform.parent != null)
+        {
+            Destroy(gameObject.transform.parent.gameObject);
+            return;
+        }
         Destroy(this.gameObject);
     }
+    //what happens when this dies
+    public virtual void OnDeath()
+    {
+        if (deathExplosion != null)
+        {
+            Instantiate(deathExplosion, gameObject.transform.position, gameObject.transform.rotation);
+        }
+    }
+
+
+    //used to modify where bullets should aim. 
+    public virtual Vector3 getHitOffset()
+    {
+        return new Vector3(0, 0, 0);
+    }
+
 
     public void SetSelected(bool b)
     {

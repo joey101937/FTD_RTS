@@ -5,21 +5,33 @@ using UnityEngine;
 public class Projectile : MonoBehaviour {
 
     public GameObject target = null;
+    public GameObject explosionEffect = null; //to be set in inspector
     public int damage = 0;
+    public float speed = 1.7f;
     bool hasLaunched = false;
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    // Use this for initialization
+    void Start() {
+
+    }
+
+    // Update is called once per frame
+    void Update() {
         if (hasLaunched)
         {
-            transform.LookAt(target.transform.position);
-            gameObject.transform.Translate(0, 0, .25f);
+            Vector3 destination = target.transform.position;
+            if (target == null) {
+                Destroy(this.gameObject);
+                return;
+                }
+            BaseUnit unit = target.GetComponent<BaseUnit>();
+            if (unit != null)
+            {
+                destination += unit.getHitOffset();
+            }
+            transform.LookAt(destination);
+            gameObject.transform.Translate(0, 0, speed);
         }
-	}
+    }
 
     /*
      * launches the projectile at target
@@ -31,5 +43,28 @@ public class Projectile : MonoBehaviour {
             return;
         }
         hasLaunched = true;
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        BaseUnit hit = other.gameObject.GetComponent<BaseUnit>();
+        if (hit != null)
+        {
+            OnImpact(hit);
+        }
+    }
+
+    /*
+     * what we want to have happen when we hit another unit
+     */
+    public virtual void OnImpact(BaseUnit hit)
+    {
+        hit.TakeDamage(damage);
+        GameObject.Destroy(this.gameObject);
+        if (explosionEffect != null)
+        {
+            GameObject impactEffect = Instantiate(this.explosionEffect,this.transform.position,this.transform.rotation);
+            impactEffect.transform.localScale = new Vector3(.1f, .1f, .1f);
+        }
     }
 }

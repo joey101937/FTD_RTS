@@ -42,7 +42,7 @@ public class Turret : MonoBehaviour {
         {
             print("looking at idle");
             this.transform.LookAt(new Vector3(idleTarget.transform.position.x, gameObject.transform.position.y, idleTarget.gameObject.transform.position.z));
-            barrel.transform.LookAt(new Vector3(idleTarget.transform.position.x, gameObject.transform.position.y, idleTarget.transform.position.z));
+            barrel.transform.LookAt(new Vector3(idleTarget.transform.position.x, idleTarget.gameObject.transform.position.y, idleTarget.transform.position.z));
         }
        
         print("turret update");
@@ -78,6 +78,5 @@ public class Turret : MonoBehaviour {
             foe = null;
         }
     }
-
 
 }
