@@ -29,6 +29,10 @@ public class Pathfinder : MonoBehaviour {
             //if the player said to go somewhere, go there and thats it.
 
             agent.SetDestination(givenDestination);
+            if (Vector3.Distance(transform.position, givenDestination) <= 10)
+            {
+                travelingByInstruction = false; //we have arrived
+            }
             return;
         }
         else
@@ -112,4 +116,10 @@ public class Pathfinder : MonoBehaviour {
     } // Only used for editor visual stuff
     */
 
+
+    public void issueMoveOrder(Vector3 destination)
+    {
+        this.travelingByInstruction = true;
+        givenDestination = destination;
+    }
 }

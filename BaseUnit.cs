@@ -16,6 +16,8 @@ public class BaseUnit : MonoBehaviour {
     public Pathfinder myPathfinder = null; //this is to be set on start
     public List<Turret> turrets = new List<Turret>();
     public GameObject deathExplosion = null; //spawns on death
+    public GameObject selectionCircle = null; //the green thing that is around the unit when selected
+    private GameObject spawnedSelectionCircle = null; //the actual circle thing that is currently around the unit
     public Classification classification = Classification.Simple;
     void Start()
     {
@@ -107,11 +109,19 @@ public class BaseUnit : MonoBehaviour {
         if (b)
         {
             selected = true;
+            if (selectionCircle != null && spawnedSelectionCircle==null)
+            {
+                spawnedSelectionCircle = Instantiate(this.selectionCircle, new Vector3(transform.position.x, -.35f, transform.position.z), new Quaternion(0, 0, 0, 0), this.transform);
+            }
             //add here code that make a torus appear around the unit BROM ADD IT
         }
         else
         {
             selected = false;
+            if (spawnedSelectionCircle != null)
+            {
+                Destroy(spawnedSelectionCircle);
+            }
             //add here code that makes the torus invisable BROM ADD IT
         }
     }

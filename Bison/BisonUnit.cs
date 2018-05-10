@@ -13,7 +13,6 @@ public class BisonUnit : BaseUnit {
         selected = false;
         classification = Classification.Tank;
         myPathfinder = gameObject.GetComponent<Pathfinder>();
-        team = 1;
         print("bison init done");
         this.myPathfinder = transform.parent.gameObject.GetComponent<Pathfinder>();
     }

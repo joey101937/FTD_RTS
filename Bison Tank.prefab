@@ -137,7 +137,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1075829261545686}
   m_LocalRotation: {x: -0, y: -0.6356241, z: -0, w: 0.7719987}
-  m_LocalPosition: {x: 54.1, y: 1.4787531, z: 65.7}
+  m_LocalPosition: {x: 19.806969, y: 1.4787531, z: 4.1338234}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4428407692213110}
@@ -363,6 +363,8 @@ MonoBehaviour:
   turrets: []
   deathExplosion: {fileID: 1027494604502326, guid: 625835ae524ca9147affb8535c4d8eca,
     type: 2}
+  selectionCircle: {fileID: 1247391874464468, guid: 1a3c0ef284be69942be2869bc1658dc5,
+    type: 2}
   classification: 0
 --- !u!114 &114263585670323958
 MonoBehaviour:
@@ -406,7 +408,7 @@ MonoBehaviour:
   host: {fileID: 0}
   myWeapon: {fileID: 0}
   scanRadius: 10
-  debugging: 1
+  debugging: 0
   foe: {fileID: 0}
   travelingByInstruction: 0
   givenDestination: {x: 0, y: 0, z: 0}
@@ -452,8 +454,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 7
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Speed: 8
+  m_Acceleration: 2000
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0

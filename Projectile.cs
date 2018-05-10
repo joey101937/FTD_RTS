@@ -16,13 +16,14 @@ public class Projectile : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if (target == null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
         if (hasLaunched)
         {
             Vector3 destination = target.transform.position;
-            if (target == null) {
-                Destroy(this.gameObject);
-                return;
-                }
             BaseUnit unit = target.GetComponent<BaseUnit>();
             if (unit != null)
             {
@@ -48,7 +49,7 @@ public class Projectile : MonoBehaviour {
     public void OnTriggerEnter(Collider other)
     {
         BaseUnit hit = other.gameObject.GetComponent<BaseUnit>();
-        if (hit != null)
+        if (hit != null && hit==target.GetComponent<BaseUnit>())
         {
             OnImpact(hit);
         }
