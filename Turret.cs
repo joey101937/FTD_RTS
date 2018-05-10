@@ -13,6 +13,7 @@ public class Turret : MonoBehaviour {
     Quaternion idleRotation;
     Quaternion targetRotation;
     public Idletarget idleTarget;
+    public bool debugging = false;
     // Use this for initialization
     void Start () {
         host = this.gameObject.transform.parent.GetComponent<BaseUnit>();
@@ -21,8 +22,9 @@ public class Turret : MonoBehaviour {
         idleRotation = transform.rotation;
         targetRotation = idleRotation;
         host.setupWeapons();
-        print("turned 45");
+        if (debugging) print("turned 45");
         transform.Rotate(new Vector3(0, 1, 0), 45);
+
        
 	}
 	
@@ -40,12 +42,12 @@ public class Turret : MonoBehaviour {
         }
         else
         {
-            print("looking at idle");
+            if(debugging) print("looking at idle");
             this.transform.LookAt(new Vector3(idleTarget.transform.position.x, gameObject.transform.position.y, idleTarget.gameObject.transform.position.z));
             barrel.transform.LookAt(new Vector3(idleTarget.transform.position.x, idleTarget.gameObject.transform.position.y, idleTarget.transform.position.z));
         }
-       
-        print("turret update");
+
+        if (debugging) print("turret update");
     }
 
     void setDistances()

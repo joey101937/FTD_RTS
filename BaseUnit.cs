@@ -113,7 +113,7 @@ public class BaseUnit : MonoBehaviour {
             {
                 spawnedSelectionCircle = Instantiate(this.selectionCircle, new Vector3(transform.position.x, -.35f, transform.position.z), new Quaternion(0, 0, 0, 0), this.transform);
             }
-            //add here code that make a torus appear around the unit BROM ADD IT
+            //add here code that make a torus appear around the unit BROM ADD IT, your selection method sucks
         }
         else
         {
@@ -125,6 +125,7 @@ public class BaseUnit : MonoBehaviour {
             //add here code that makes the torus invisable BROM ADD IT
         }
     }
+
 
     public bool IsSelected()
     {

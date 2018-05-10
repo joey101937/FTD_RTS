@@ -28,6 +28,5 @@ public class BisonWeapon : Weapon {
         fireRate = 2f;
         loadProjectile();
         this.bulletSpawnOffset = new Vector3(0, 0, 0);
-        this.bulletSpawnOffset = new Vector3(0, 0, 0);
     }
 }

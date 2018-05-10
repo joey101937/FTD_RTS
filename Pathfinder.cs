@@ -16,13 +16,22 @@ public class Pathfinder : MonoBehaviour {
     public BaseUnit foe = null;
     public bool travelingByInstruction = false; //is the unit going somewhere teh player insctructed
     public Vector3 givenDestination = new Vector3(0,0,0); //where the player told the unit to go
+    private GameObject waypoint = null; //waypoint, displayed when unit is selected so we can see where it is trying to go
     // set distances fields
     Collider[] nearbyCol;
     List<BaseUnit> nearbyEnemies;
-
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(this.gameObject.transform.position, 70);
+    }
 
     private void Update()
     {
+        if(host.selected && travelingByInstruction && waypoint==null)
+        {
+            waypoint = Instantiate(PlayerControl.waypointGlobal, givenDestination, new Quaternion(0, 0, 0, 0));
+        }
         SetDistances();
         if (travelingByInstruction)
         {
@@ -106,15 +115,9 @@ public class Pathfinder : MonoBehaviour {
         }
         if (debugging) print("END OF SETDIST, FOE IS  " + foe);
     }
-    /*
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(this.gameObject.transform.position, 70);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(this.gameObject.transform.position, 55);
-    } // Only used for editor visual stuff
-    */
+    
+
+    
 
 
     public void issueMoveOrder(Vector3 destination)

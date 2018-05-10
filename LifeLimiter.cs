@@ -4,18 +4,12 @@ using UnityEngine;
 
 public class LifeLimiter : MonoBehaviour {
     public float Duration = 2; //in seconds, modified in inspector
-    private float realDur = 0;
 	// Use this for initialization
-	void Start () {
-        realDur = Duration;
-        realDur += Time.time;
+	IEnumerator Start () {
+        yield return new WaitForSecondsRealtime(Duration);
+        Destroy(this.gameObject);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		if(Time.time > realDur)
-        {
-            GameObject.Destroy(this.gameObject);
-        }
-	}
+
+
 }

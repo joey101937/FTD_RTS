@@ -12,7 +12,6 @@ public class BisonUnit : BaseUnit {
         HP = maxHP;
         selected = false;
         classification = Classification.Tank;
-        myPathfinder = gameObject.GetComponent<Pathfinder>();
         print("bison init done");
         this.myPathfinder = transform.parent.gameObject.GetComponent<Pathfinder>();
     }
