@@ -4,21 +4,56 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Turret : MonoBehaviour {
-    public BaseUnit host = null;
-    public Barrel barrel = null;
-    public Weapon weapon = null;
+    private BaseUnit host = null;
+    private Barrel barrel = null;
+    private Weapon weapon = null;
     BaseUnit foe = null;
     Collider[] nearbyCol;
     List<BaseUnit> nearbyEnemies;
     Quaternion idleRotation;
     Quaternion targetRotation;
-    public Idletarget idleTarget;
+    private Idletarget idleTarget;
     public bool debugging = false;
+
+    public Idletarget getIdleTarget()
+    {
+        return idleTarget;
+    }
+    public void setIdleTarget(Idletarget it)
+    {
+        idleTarget = it;
+    }
+
+    public BaseUnit getHost()
+    {
+        return host;
+    }
+    public void setHost(BaseUnit b)
+    {
+        host = b;
+    }
+    public Barrel getBarrel()
+    {
+        return barrel;
+    }
+    public void setBarrel(Barrel b)
+    {
+        barrel = b;
+    }
+    public Weapon getWeapon()
+    {
+        return barrel.getWeapon();
+    }
+    public void setWeapon(Weapon w)
+    {
+        weapon = w;
+    }
+
     // Use this for initialization
     void Start () {
         host = this.gameObject.transform.parent.GetComponent<BaseUnit>();
         barrel = this.gameObject.GetComponentInChildren<Barrel>();
-        weapon = barrel.weapon;
+        weapon = barrel.getWeapon() ;
         idleRotation = transform.rotation;
         targetRotation = idleRotation;
         host.setupWeapons();
@@ -59,7 +94,7 @@ public class Turret : MonoBehaviour {
             BaseUnit a = nearbyCol[col].gameObject.GetComponent<BaseUnit>();
             if (a != null)
             {
-                if (a.team != 0 && a.team != host.team && weapon.isValidTarget(a) && weapon.isInRange(a))
+                if (a.owner != 0 && a.owner != host.owner && weapon.isValidTarget(a) && weapon.isInRange(a))
                 {
                     nearbyEnemies.Add(a);
                 }
@@ -75,7 +110,7 @@ public class Turret : MonoBehaviour {
                 foe = a;
             }
         }
-        if (foe==null || !weapon.isInRange(foe) || foe.team == host.team)
+        if (foe==null || !weapon.isInRange(foe) || foe.owner == host.owner)
         {
             foe = null;
         }

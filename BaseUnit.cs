@@ -8,23 +8,83 @@ using UnityEngine;
 public class BaseUnit : MonoBehaviour {
     public Weapon hullMountedWeapon = null;
     public int maxHP, HP;
-    public int team = 0; //0 is neutral
+    public int owner = 0; //0 is neutral
     public bool selected;
     public bool isArmed = true; //does this have a weapon or turret
-    public int weaponRange = 0; //range of weapon(s)
-    public string unitName = "Unnamed Unit";
-    public Pathfinder myPathfinder = null; //this is to be set on start
+    private int weaponRange = 0; //range of weapon(s)
+    private string unitName = "Unnamed Unit";
+    private Pathfinder myPathfinder = null; //this is to be set on start
     public List<Turret> turrets = new List<Turret>();
     public GameObject deathExplosion = null; //spawns on death
     public GameObject selectionCircle = null; //the green thing that is around the unit when selected
     private GameObject spawnedSelectionCircle = null; //the actual circle thing that is currently around the unit
-    public Classification classification = Classification.Simple;
+    private Classification classification = Classification.Simple;
+
+    public Pathfinder getMyPathfinder()
+    {
+        return myPathfinder;
+    }
+    public void setMyPathfinder(Pathfinder p)
+    {
+        myPathfinder = p;
+    }
+    public Classification GetClassification()
+    {
+        return classification;
+    }
+    public void setClassification(Classification c)
+    {
+        classification = c;
+    }
+    public string getUnitName()
+    {
+        return unitName;
+    }
+    public void setUnitName(string s)
+    {
+        unitName = s;
+    }
+
     void Start()
     {
         init();
-        setupWeapons();
+        recordUnit();
     }
+    public int getWeaponRnage()
+    {
+        return weaponRange;
+    }
+    public void setWeaponRange(int i )
+    {
+        weaponRange = i;
+    }
+    //adds unit to list of that player
+    public void recordUnit()
+    {
+        try
+        {
+            if (PlayerControl.playerUnits[owner] == null)
+            {
+                PlayerControl.playerUnits.Add(owner, new HashSet<BaseUnit>());
+            }
+            PlayerControl.playerUnits[owner].Add(this);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            PlayerControl.playerUnits.Add(owner, new HashSet<BaseUnit>());
+            PlayerControl.playerUnits[owner].Add(this);
+            print("added key " + owner);
+        }
 
+    }
+    //removes unit from playerlist
+    public void recordUnitDeath()
+    {
+        if (PlayerControl.playerUnits[owner].Contains(this))
+        {
+            PlayerControl.playerUnits[owner].Remove(this);
+        }
+    }
     public void setupWeapons()
     {
         int lowestRange = 99999;
@@ -35,9 +95,9 @@ public class BaseUnit : MonoBehaviour {
             {
                 if (t == null) continue;
                 if (!turrets.Contains(t)) turrets.Add(t);
-                if (t.weapon.range < lowestRange)
+                if (t.getWeapon().range < lowestRange)
                 {
-                    lowestRange = t.weapon.range;
+                    lowestRange = t.getWeapon().range;
                 }
             }
         }
@@ -58,7 +118,7 @@ public class BaseUnit : MonoBehaviour {
         selected = false;
         classification = Classification.Simple;
         myPathfinder = gameObject.GetComponent<Pathfinder>();
-        team = 1;
+        owner = 1;
     }
 
 
@@ -79,7 +139,9 @@ public class BaseUnit : MonoBehaviour {
      */
     public void Kill()
     {
+        recordUnitDeath();
         OnDeath();
+
         if (gameObject.transform.parent != null)
         {
             Destroy(gameObject.transform.parent.gameObject);
@@ -97,6 +159,7 @@ public class BaseUnit : MonoBehaviour {
     }
 
 
+
     //used to modify where bullets should aim. 
     public virtual Vector3 getHitOffset()
     {
@@ -111,7 +174,7 @@ public class BaseUnit : MonoBehaviour {
             selected = true;
             if (selectionCircle != null && spawnedSelectionCircle==null)
             {
-                spawnedSelectionCircle = Instantiate(this.selectionCircle, new Vector3(transform.position.x, -.35f, transform.position.z), new Quaternion(0, 0, 0, 0), this.transform);
+                spawnedSelectionCircle = Instantiate(this.selectionCircle, new Vector3(transform.parent.transform.position.x, -.35f, transform.parent.transform.position.z), new Quaternion(0, 0, 0, 0), this.transform);
             }
             //add here code that make a torus appear around the unit BROM ADD IT, your selection method sucks
         }

@@ -10,10 +10,21 @@ public class Weapon : MonoBehaviour {
     public int range = 10;
     public int damage = 10;
     public GameObject projectileObject; //should be set to the thing we want to fire
-    public Projectile projectile = null; //projectile script to be taken from projectile object
+    private Projectile projectile = null; //projectile script to be taken from projectile object
     public bool antiGround, antiAir; //can it shoot at ground / air targets
     public float fireRate = 1f; //how  often it can fire
     public float lastFireTime = 0;
+
+
+    public Projectile getProjectile()
+    {
+        return projectile;
+    }
+    public void setProjectile(Projectile p)
+    {
+        projectile = p;
+    }
+
 	// Use this for initialization
 	void Start () {
         init();
@@ -50,10 +61,10 @@ public class Weapon : MonoBehaviour {
 
     public virtual bool isValidTarget(BaseUnit target)
     {
-       if((target.classification == Classification.Heli || target.classification == Classification.Plane) && !antiAir) {
+       if((target.GetClassification() == Classification.Heli || target.GetClassification() == Classification.Plane) && !antiAir) {
             return false;
         }
-       if((target.classification == Classification.Structure || target.classification == Classification.Tank || target.classification == Classification.Simple) && !antiGround)
+       if((target.GetClassification() == Classification.Structure || target.GetClassification() == Classification.Tank || target.GetClassification() == Classification.Simple) && !antiGround)
         {
             return false;
         }

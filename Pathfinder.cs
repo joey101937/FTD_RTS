@@ -8,14 +8,14 @@ using UnityEngine.AI;
  * this is the pathfinder to be used with "simple" classification units
  */
 public class Pathfinder : MonoBehaviour {
-    public NavMeshAgent agent;
-    public BaseUnit host;
-    public Weapon myWeapon;
-    public int scanRadius = 70;
+    private NavMeshAgent agent;
+    private BaseUnit host;
+    private Weapon myWeapon;
+    private int scanRadius = 70;
     public bool debugging = true;
-    public BaseUnit foe = null;
-    public bool travelingByInstruction = false; //is the unit going somewhere teh player insctructed
-    public Vector3 givenDestination = new Vector3(0,0,0); //where the player told the unit to go
+    private BaseUnit foe = null;
+    private bool travelingByInstruction = false; //is the unit going somewhere teh player insctructed
+    private Vector3 givenDestination = new Vector3(0,0,0); //where the player told the unit to go
     private GameObject waypoint = null; //waypoint, displayed when unit is selected so we can see where it is trying to go
     // set distances fields
     Collider[] nearbyCol;
@@ -26,9 +26,49 @@ public class Pathfinder : MonoBehaviour {
         Gizmos.DrawWireSphere(this.gameObject.transform.position, 70);
     }
 
+    public BaseUnit getHost()
+    {
+        return host;
+    }
+
+    public NavMeshAgent getAgent()
+    {
+        return agent;
+    }
+    public Weapon getMyWeapon()
+    {
+        return myWeapon;
+    }
+    public int getScanRadius()
+    {
+        return scanRadius;
+    }
+    public BaseUnit getFoe()
+    {
+        return foe;
+    }
+    public Vector3 getGivenDestination()
+    {
+        return givenDestination;
+    }
+    public void setGivenDestination(Vector3 i)
+    {
+        givenDestination = i;
+    }
+    public bool isTravelingByInstruction()
+    {
+        return travelingByInstruction;
+    }
+
     private void Update()
     {
-        if(host.selected && travelingByInstruction && waypoint==null)
+        if (host.GetClassification() == Classification.Structure)
+        {
+            agent.speed = 0;
+            agent.SetDestination(transform.position);
+            return; 
+        }
+        if (host.selected && travelingByInstruction && waypoint==null)
         {
             waypoint = Instantiate(PlayerControl.waypointGlobal, givenDestination, new Quaternion(0, 0, 0, 0));
         }
@@ -50,7 +90,7 @@ public class Pathfinder : MonoBehaviour {
             {
                 //there is a foe around, go to it
                 agent.SetDestination(foe.transform.position);
-                if (Vector3.Distance(foe.transform.position, transform.position) <= host.weaponRange+0) //+2 so we go alittle under the required range
+                if (Vector3.Distance(foe.transform.position, transform.position) <= host.getWeaponRnage()+0) //+2 so we go alittle under the required range
                 {
                     agent.SetDestination(transform.position); //stop once in range
                     if (host.hullMountedWeapon != null)
@@ -65,7 +105,6 @@ public class Pathfinder : MonoBehaviour {
             }
         }
     }
-
 
 
     void Awake()
@@ -92,8 +131,8 @@ public class Pathfinder : MonoBehaviour {
             BaseUnit a = nearbyCol[col].gameObject.GetComponent<BaseUnit>();
             if (a != null)
             {
-                if (debugging) print("found a unit of team " + a.team + " (im team " + host.team+ ")");
-                if (a.team != 0 && a.team != host.team)
+                if (debugging) print("found a unit of team " + a.owner + " (im team " + host.owner+ ")");
+                if (a.owner != 0 && a.owner != host.owner)
                 {
                     nearbyEnemies.Add(a);
                 }
@@ -101,7 +140,7 @@ public class Pathfinder : MonoBehaviour {
         }
         if (debugging)
         {
-            print("unit of team " + host.team + " found " + nearbyEnemies.Count +" nearby enemies");
+            print("unit of team " + host.owner + " found " + nearbyEnemies.Count +" nearby enemies");
         }
         float closest = -1f;
         foreach (BaseUnit a in nearbyEnemies)

@@ -7,6 +7,6 @@ public class Idletarget : MonoBehaviour {
     public GameObject turret;
     private void Awake()
     {
-        turret.GetComponent<Turret>().idleTarget = this;
+        turret.GetComponent<Turret>().setIdleTarget(this);
     }
 }
