@@ -59,13 +59,13 @@ public class Turret : MonoBehaviour {
         host.setupWeapons();
         if (debugging) print("turned 45");
         transform.Rotate(new Vector3(0, 1, 0), 45);
+        InvokeRepeating("setDistances", .1f, .4f);
 
        
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        setDistances();
         if (foe != null)
         {
             this.transform.LookAt(new Vector3(foe.transform.position.x,gameObject.transform.position.y,foe.gameObject.transform.position.z));

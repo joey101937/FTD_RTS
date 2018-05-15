@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FactoryUnit : BaseUnit, ProductionFacilityInterface{
-
-    public List<GameObject> products = new List<GameObject>(); //should be populated via inspector. index 0 should have a bison tank for testing
-    private SpawnPad myPad;
-    public List<GameObject> backorder = new List<GameObject>(); //list of units waiting to spawn
-    private float lastSpawn = 0;
-    int updateDelay = 1;
+public class FactoryUnit : ProductionFacility{
+    int updateDelay = 1; //used so that we cant spawn a bunch of units in the same second
     public override void init()
     {
         setUnitName("Test Factory");
@@ -42,25 +37,14 @@ public class FactoryUnit : BaseUnit, ProductionFacilityInterface{
 
     public override Vector3 getHitOffset()
     {
-        int i = Random.Range(1, 11);
+        int i = Random.Range(1, 31);
         float offset = 1 + (i * .1f);
         return new Vector3(offset, offset, offset);
-
     }
 
-    public GameObject GetProduct(int number)
-    {
-        switch (number)
-        {
-            case 0:
-                return products[0];
-            default:
-                print("(1)invalid product num: " + number);
-                return null;
-        }
-    }
 
-    public int getCostOfProduct(int number)
+
+    public override int GetCostOfProduct(int number)
     {
         switch (number)
         {
@@ -72,51 +56,10 @@ public class FactoryUnit : BaseUnit, ProductionFacilityInterface{
 
         }
     }
-        public bool canAfford(int number)
-        {
-            switch (number)
-            {
-                case 0:
-                    return PlayerControl.playerResources[owner] >= getCostOfProduct(number);
-                default:
-                    print("(3)invalid product num: " + number);
-                    return false;
 
-            }
-        }
+ 
 
-            public void produce(int number)
-             {
-                if (!canAfford(number)) return;
-                PlayerControl.playerResources[owner] -= getCostOfProduct(number);
-                backorder.Add(GetProduct(number));
-            }
 
-            public void produce(GameObject go)
-            {
-                backorder.Add(go);
-            }
-
-    public void setSpawnPad(SpawnPad sp)
-    {
-        print("setting spawnpad");
-        myPad = sp;
-    }
-
-    public SpawnPad getSpawnPad()
-    {
-        return myPad;
-    }
-
-    public bool spawnClear()
-    {
-        return myPad.isOpen;
-    }
-
-    public List<GameObject> getSpawnQueue()
-    {
-        throw new System.NotImplementedException();
-    }
 
     public void spawn(GameObject go)
     {

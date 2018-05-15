@@ -12,7 +12,7 @@ public class Pathfinder : MonoBehaviour {
     private BaseUnit host;
     private Weapon myWeapon;
     private int scanRadius = 70;
-    public bool debugging = true;
+    public bool debugging = false;
     private BaseUnit foe = null;
     private bool travelingByInstruction = false; //is the unit going somewhere teh player insctructed
     private Vector3 givenDestination = new Vector3(0,0,0); //where the player told the unit to go
@@ -60,6 +60,13 @@ public class Pathfinder : MonoBehaviour {
         return travelingByInstruction;
     }
 
+    private void Start()
+    {
+        InvokeRepeating("SetDistances", .1f, .4f);
+    }
+
+
+
     private void Update()
     {
         if (host.GetClassification() == Classification.Structure)
@@ -72,7 +79,6 @@ public class Pathfinder : MonoBehaviour {
         {
             waypoint = Instantiate(PlayerControl.waypointGlobal, givenDestination, new Quaternion(0, 0, 0, 0));
         }
-        SetDistances();
         if (travelingByInstruction)
         {
             //if the player said to go somewhere, go there and thats it.
