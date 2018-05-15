@@ -137,7 +137,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1075829261545686}
   m_LocalRotation: {x: -0, y: -0.6356241, z: -0, w: 0.7719987}
-  m_LocalPosition: {x: 19.806969, y: 1.4787531, z: 4.1338234}
+  m_LocalPosition: {x: -142.48251, y: -0.45, z: -65.36293}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4428407692213110}
@@ -423,7 +423,7 @@ MonoBehaviour:
   bulletSpawnOffset: {x: 0, y: 0, z: 0}
   range: 10
   damage: 10
-  projectileObject: {fileID: 1074799895564440, guid: d0a62b88e2e9b8d45a864f3b38620a4f,
+  projectileObject: {fileID: 1768236817676030, guid: d0a62b88e2e9b8d45a864f3b38620a4f,
     type: 2}
   antiGround: 0
   antiAir: 0
