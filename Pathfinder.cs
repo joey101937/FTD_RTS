@@ -167,7 +167,17 @@ public class Pathfinder : MonoBehaviour {
 
     public void issueMoveOrder(Vector3 destination)
     {
-        this.travelingByInstruction = true;
-        givenDestination = destination;
+        ProductionFacility pf = GetComponentInChildren<ProductionFacility>();
+        if (pf == null)
+        {
+            this.travelingByInstruction = true;
+            givenDestination = destination;
+        }
+        else
+        {
+            print("setting rally point");
+            pf.setRallyPoint(destination);
+        }
+
     }
 }

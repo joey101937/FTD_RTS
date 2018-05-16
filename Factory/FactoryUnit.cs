@@ -27,6 +27,7 @@ public class FactoryUnit : ProductionFacility{
         //whenever the spawn is clear, try to spawn the next thing in the list of units that need to be spawned
         if (spawnClear() && backorder.Count>0)
         {
+            print("about to spawn");
             spawn(backorder[0]) ;
             backorder.RemoveAt(0);
             lastSpawn = Time.time;
@@ -61,9 +62,5 @@ public class FactoryUnit : ProductionFacility{
 
 
 
-    public void spawn(GameObject go)
-    {
-        Vector3 spawnLocation = getSpawnPad().transform.position + new Vector3(0, 4, 0); //4 units in the air
-        Instantiate(go, spawnLocation, new Quaternion(0, 0, 0, 0));
-    }
+
 }

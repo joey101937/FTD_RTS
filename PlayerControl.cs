@@ -28,8 +28,6 @@ public class PlayerControl : MonoBehaviour {
     private Vector2 mouseDownLocation = new Vector2(0, 0); //where the player set down the mouse to start with when dragging
     void Update()
     {
-
-
         dealWithSelectionBox();
         dealWithMovement();
         dealWithSelection();
@@ -70,8 +68,12 @@ public class PlayerControl : MonoBehaviour {
                 {
                     if ((z > mouseDownLocation.y && z < currentLocation.y) || (z < mouseDownLocation.y && z > currentLocation.y)) 
                     {
-                        //units should now be in the box
-                        select(b);
+                            //units should now be in the box
+                            if (b.GetClassification() != Classification.Structure)
+                            {
+                                //filter out structures
+                                select(b);
+                            }
                     }
                 }
             }

@@ -3,7 +3,6 @@
 -Draw lines from unit to its destination, when selected
 -Turret angle of fire
 -Production facilities
--Buildings should not be selected when selecting via selection box
 -Buildings should have rally points
 -Bison looks more like a bison
 -more extreme scrolling needed
