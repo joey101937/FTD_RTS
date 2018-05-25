@@ -2,8 +2,6 @@
 -GUI 
 -Draw lines from unit to its destination, when selected
 -Turret angle of fire
--Production facilities
--Buildings should have rally points
 -Bison looks more like a bison
 -more extreme scrolling needed
 -note ftd models are scaled 16x for unity use
